@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block center %}
+    <h2> Lista de Alunos</h2>
+
+    <form class="mb-5" action="" method="GET">
+        <label>Nome:</label>
+        <input type="text" name="nome_aluno">
+    
+    
+        <label>Cidade:</label>
+        <input type="text" name="cidade">
+    
+    
+        <label>Curso:</label>
+        <input type="text" name="curso">
+    
+    
+        <button type="submit">Buscar</button>
+    </form>
+
+    <a href="{% url 'aluno_criar' %}">Novo Cadastro</a>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>Email</th>
+            <th>Cidade</th>
+            <th>Curso</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for obj in alunos %}
+            <tr>
+                <td>{{ obj.nome_aluno }}</td>
+                <td>{{ obj.data_nascimento }}</td>
+                <td>{{ obj.email }}</td>
+                <td>{{ obj.cidade.nome }}</td>
+                <td>{{ obj.curso.nome }}</td>
+                <td>
+                    <a href="{% url 'aluno_editar' id=obj.id %}">Editar</a>
+                    <a href="{% url 'aluno_remover' id=obj.id %}">Remover</a>
+                </td>
+            </tr>
+        {% endfor %}
+        <ul>
+            {% if page_obj.has_previous %}
+            <li>
+                <a href="?page={{ page_obj.previous_page_number }}&nome{{ nome_aluno }}&cidade{{ cidade }}&curso{{ curso }}" class="page-link">Anterior</a>
+            </li>
+            {% endif %}
+
+            {% for p in page_obj.paginator.page_range %}
+            <li>
+                <a href="?page={{ p }}&nome{{ nome_aluno }}&cidade{{ cidade }}&curso{{ curso }}">{{ p }}</a>
+            </li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li>
+                <a href="?page={{ page_obj.next_page_number }}&nome{{ nome_aluno }}&cidade{{ cidade }}&curso{{ curso }}" class="page-link">Próximo &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+        
+    </tbody>
+</table>
+
+{% endblock %}
